@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileExplorer.Enums;
+using FileExplorer.Models;
 
 namespace FileExplorer.Src
 {
@@ -31,7 +32,7 @@ namespace FileExplorer.Src
             {
                 string cuttedFolderName = folder.Replace(path, "");
                 DirectoryInfo directoryInfo = new DirectoryInfo(folder);
-                Folders.Add(new Folder(cuttedFolderName, directoryInfo.LastWriteTime)); 
+                Folders.Add(new Folder(cuttedFolderName, directoryInfo.LastWriteTime, folder)); 
             }
         }
 
@@ -49,7 +50,7 @@ namespace FileExplorer.Src
                 listViewItem.SubItems.Add(folder.DateModified.ToString());
                 listViewItem.SubItems.Add(folder.Type);
                 listViewItem.SubItems.Add(folder.Size);
-                listViewItem.Tag = ItemType.Folder; // I also need to store path to the file or folder
+                listViewItem.Tag = new ListViewResourcesItem(folder.Path, ItemType.Folder);
                 listViewItem.ImageKey = imageController.ImageKeyFolder;
                 listView.Items.Add(listViewItem);
             }
@@ -57,13 +58,14 @@ namespace FileExplorer.Src
 
         public void LeftClickOnItem(ListView listView, ListViewItem folderOrFile)
         {
-
-            // here i would like to know did i click on folder or file 
-            if((ItemType)folderOrFile.Tag == ItemType.Folder)
+            // go thru MODELS, CASTING, ENUMS
+            var castedTagObj = (ListViewResourcesItem)folderOrFile.Tag;
+            Console.WriteLine(ItemType.Folder);
+            if(castedTagObj.ItemType == ItemType.Folder) 
             {
                 // empty list view
                 OpenFolder(listView);
-                FetchResources("C:\\Users\\Milic\\Desktop");
+                FetchResources(castedTagObj.Path);
                 RenderFoldersAndFiles(listView);
             }
         }

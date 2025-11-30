@@ -10,14 +10,16 @@ namespace FileExplorer.Src
     {
         public string Name { get; set; }
         public DateTime DateModified { get; set; }
+        public string Path { get; set; }
 
         public abstract string  Type { get;  }
         public abstract string  Size { get; }
 
-        protected FileSystemItem(string name, DateTime time)
+        protected FileSystemItem(string name, DateTime time, string path)
         {
             Name = name;
             DateModified = time;
+            Path = path;
         }
     }
 }

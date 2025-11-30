@@ -12,8 +12,8 @@ namespace FileExplorer.Src
 
         public override string Type { get; } = "File Folder";
 
-        public Folder(string name, DateTime time)
-            :base(name, time)
+        public Folder(string name, DateTime time, string path)
+            : base(name, time, path)
         {
         }
     }
