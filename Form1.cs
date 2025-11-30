@@ -4,9 +4,11 @@ namespace FileExplorer
 {
     public partial class Form1 : Form
     {
+        FileManager FileManager = new FileManager();
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -23,22 +25,20 @@ namespace FileExplorer
             // { name: "something", lastUpdated: "21.09.2025", type: "Folder", size: "" }
 
 
-            FileManager fileManager = new FileManager();
-            fileManager.FetchResources(@"C:\");
-            fileManager.RenderFoldersAndFiles(listViewResources);
+            FileManager.FetchResources(@"C:\");
+            FileManager.RenderFoldersAndFiles(listViewResources);
 
         }
 
         private void listViewResources_MouseClick(object sender, MouseEventArgs e)
         {
-            //if (e.Button == MouseButtons.Right)
-            //{
-            //    ListViewItem item = listViewResources.GetItemAt(e.X, e.Y);
-            //    if (item != null)
-            //    {
-            //        MessageBox.Show($"Right-clicked on: {item.Text}");
-            //    }
-            //}
+            if (e.Button == MouseButtons.Left)
+            {
+                ListViewItem clickedItem = listViewResources.GetItemAt(e.X, e.Y);
+                if (clickedItem != null) {
+                    FileManager.LeftClickOnItem(listViewResources, clickedItem);
+                }
+            }
         }
     }
 }
