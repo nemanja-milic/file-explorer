@@ -4,11 +4,11 @@ namespace FileExplorer
 {
     public partial class Form1 : Form
     {
-        FileManager FileManager = new FileManager();
+        FileManager FileManager;
         public Form1()
         {
             InitializeComponent();
-
+            FileManager = new FileManager(listViewResources, currentAddress);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -26,7 +26,7 @@ namespace FileExplorer
 
 
             FileManager.FetchResources(@"C:\");
-            FileManager.RenderFoldersAndFiles(listViewResources);
+            FileManager.RenderFoldersAndFiles();
 
         }
 

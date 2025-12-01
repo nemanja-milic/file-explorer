@@ -12,17 +12,30 @@ namespace FileExplorer.Src
 {
     internal class FileManager
     {
+        private ListView ListViewResources { get; }
+        private TextBox CurrentPathTextBox { get; }
 
         private List<Folder> Folders = new List<Folder>();
+        private string CurrentPath { get; set; } = "";
+
         //private List<File> Files;
+
+
+        public FileManager(ListView listView, TextBox currentPathTextBox)
+        {
+            ListViewResources = listView;
+            CurrentPathTextBox = currentPathTextBox;
+        }
+
 
         public void FetchResources(string path) 
         {
             // fetch all files
            //  call render folder and files
-
+            CurrentPath = path;
+            
             FetchFolders(path);
-            //Helper.PrintList(Folders);
+           //Helper.PrintList(Folders);
         }
 
         private void FetchFolders(string path)
@@ -36,13 +49,15 @@ namespace FileExplorer.Src
             }
         }
 
-        public void RenderFoldersAndFiles(ListView listView)
+        public void RenderFoldersAndFiles()
         {
             ImageController imageController = new ImageController();
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(20, 20);
             imageList.Images.Add(imageController.ImageKeyFolder, Image.FromFile(imageController.Folder));
-            listView.SmallImageList = imageList;
+            ListViewResources.SmallImageList = imageList;
+
+            CurrentPathTextBox.Text = CurrentPath;
 
             foreach(Folder folder in Folders)
             {
@@ -52,7 +67,7 @@ namespace FileExplorer.Src
                 listViewItem.SubItems.Add(folder.Size);
                 listViewItem.Tag = new ListViewResourcesItem(folder.Path, ItemType.Folder);
                 listViewItem.ImageKey = imageController.ImageKeyFolder;
-                listView.Items.Add(listViewItem);
+                ListViewResources.Items.Add(listViewItem);
             }
         }
 
@@ -66,7 +81,7 @@ namespace FileExplorer.Src
                 // empty list view
                 OpenFolder(listView);
                 FetchResources(castedTagObj.Path);
-                RenderFoldersAndFiles(listView);
+                RenderFoldersAndFiles();
             }
         }
 
