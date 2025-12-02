@@ -40,6 +40,7 @@ namespace FileExplorer.Src
 
         private void FetchFolders(string path)
         {
+            // add try and catch
             var folders = Directory.EnumerateDirectories(path);
             foreach (var folder in folders)
             {
@@ -79,17 +80,36 @@ namespace FileExplorer.Src
             if(castedTagObj.ItemType == ItemType.Folder) 
             {
                 // empty list view
-                OpenFolder(listView);
+                ClearResources();
                 FetchResources(castedTagObj.Path);
                 RenderFoldersAndFiles();
             }
         }
 
-        public void OpenFolder(ListView listView)
+        public void ClearResources()
         {
             // maybe in future add some spinner 
-            listView.Items.Clear();
+            ListViewResources.Items.Clear();
             Folders.Clear();
+        }
+
+        public void GoBackFromFolder()
+        {
+            if (CurrentPathTextBox.Text == @"C:\") return;
+            string newPath = CurrentPath[..CurrentPath.LastIndexOf(Path.DirectorySeparatorChar)];
+
+            // FIX: "C:" → "C:\" (or D:, E:, etc.)
+            if (newPath == "C:") newPath = @"C:\";
+            CurrentPathTextBox.Text = newPath;
+            ClearResources();
+            FetchResources(newPath);
+            RenderFoldersAndFiles();
+        }
+
+        public void GoForward()
+        {
+            // after first time go Back button is pressed i can then move forward
+            
         }
     }
 }

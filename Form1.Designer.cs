@@ -49,6 +49,7 @@
             btnBack.TabIndex = 0;
             btnBack.Text = "<<";
             btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
             // 
             // btnForward
             // 

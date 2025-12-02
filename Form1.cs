@@ -4,7 +4,7 @@ namespace FileExplorer
 {
     public partial class Form1 : Form
     {
-        FileManager FileManager;
+        private FileManager FileManager;
         public Form1()
         {
             InitializeComponent();
@@ -35,10 +35,16 @@ namespace FileExplorer
             if (e.Button == MouseButtons.Left)
             {
                 ListViewItem clickedItem = listViewResources.GetItemAt(e.X, e.Y);
-                if (clickedItem != null) {
+                if (clickedItem != null)
+                {
                     FileManager.LeftClickOnItem(listViewResources, clickedItem);
                 }
             }
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            FileManager.GoBackFromFolder();
         }
     }
 }
