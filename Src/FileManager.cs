@@ -18,6 +18,12 @@ namespace FileExplorer.Src
         private List<Folder> Folders = new List<Folder>();
         private string CurrentPath { get; set; } = "";
 
+        private List<string> OldPaths = new List<string>();
+
+        private int IndexFolderPointer = 0;
+
+        public bool CanGoForward { get; set; } = false;
+
         //private List<File> Files;
 
 
@@ -72,17 +78,28 @@ namespace FileExplorer.Src
             }
         }
 
-        public void LeftClickOnItem(ListView listView, ListViewItem folderOrFile)
+        public void ReloadView(string path)
+        {
+            ClearResources();
+            FetchResources(path);
+            RenderFoldersAndFiles();
+        }
+
+        // modify openFolder that accept nither path or listviewitem
+        public void OpenFolder(ListView listView, ListViewItem folderOrFile)
         {
             // go thru MODELS, CASTING, ENUMS
             var castedTagObj = (ListViewResourcesItem)folderOrFile.Tag;
-            Console.WriteLine(ItemType.Folder);
+
+            
+
+            // ask is castedTagObj diffrent from history[1] 
+            // if it is then you list [root path, ]
+            
             if(castedTagObj.ItemType == ItemType.Folder) 
             {
                 // empty list view
-                ClearResources();
-                FetchResources(castedTagObj.Path);
-                RenderFoldersAndFiles();
+                ReloadView(castedTagObj.Path);
             }
         }
 
@@ -101,15 +118,13 @@ namespace FileExplorer.Src
             // FIX: "C:" → "C:\" (or D:, E:, etc.)
             if (newPath == "C:") newPath = @"C:\";
             CurrentPathTextBox.Text = newPath;
-            ClearResources();
-            FetchResources(newPath);
-            RenderFoldersAndFiles();
+            ReloadView(newPath);
+            IndexFolderPointer--;
         }
 
         public void GoForward()
         {
-            // after first time go Back button is pressed i can then move forward
-            
+
         }
     }
 }

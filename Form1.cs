@@ -37,7 +37,8 @@ namespace FileExplorer
                 ListViewItem clickedItem = listViewResources.GetItemAt(e.X, e.Y);
                 if (clickedItem != null)
                 {
-                    FileManager.LeftClickOnItem(listViewResources, clickedItem);
+                    FileManager.CanGoForward = true;
+                    FileManager.OpenFolder(listViewResources, clickedItem);
                 }
             }
         }
@@ -45,6 +46,11 @@ namespace FileExplorer
         private void btnBack_Click(object sender, EventArgs e)
         {
             FileManager.GoBackFromFolder();
+        }
+
+        private void btnForward_Click(object sender, EventArgs e)
+        {
+            FileManager.GoForward();
         }
     }
 }

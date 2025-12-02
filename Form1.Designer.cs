@@ -60,6 +60,7 @@
             btnForward.TabIndex = 2;
             btnForward.Text = ">>";
             btnForward.UseVisualStyleBackColor = true;
+            btnForward.Click += btnForward_Click;
             // 
             // currentAddress
             // 
