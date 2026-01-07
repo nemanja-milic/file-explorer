@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="images\ffile-general.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="images\folder-svgrepo-com.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

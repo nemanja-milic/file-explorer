@@ -12,6 +12,10 @@ namespace FileExplorer.Src
         public string Folder => "images/folder-svgrepo-com.png";
         public string ImageKeyFolder => "folder";
 
+        public string File => "images/ffile-general.png";
+
+        public string ImageKeyFile => "file";
+
         public ImageController()
         {
 
