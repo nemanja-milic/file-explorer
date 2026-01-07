@@ -13,16 +13,13 @@ namespace FileExplorer.Src
     internal class FileManager
     {
         private ListView ListViewResources { get; }
-        private TextBox CurrentPathTextBox { get; }
 
         private List<Folder> Folders = new List<Folder>();
-        private string CurrentPath { get; set; } = "";
 
-        private List<string> OldPaths = new List<string>();
+        private TextBox CurrentPathTextBox { get; set; }
 
-        private int IndexFolderPointer = 0;
+        private Navigation Navigation;
 
-        public bool CanGoForward { get; set; } = false;
 
         //private List<File> Files;
 
@@ -31,40 +28,74 @@ namespace FileExplorer.Src
         {
             ListViewResources = listView;
             CurrentPathTextBox = currentPathTextBox;
+            Navigation = new Navigation();
         }
 
-
-        public void FetchResources(string path) 
+        public void Initialize(string defaultPath)
         {
-            // fetch all files
-           //  call render folder and files
-            CurrentPath = path;
-            
+            NavigateTo(defaultPath);
+            Navigation.Add(defaultPath);
+        }
+
+        private void NavigateTo(string path)
+        {
+            ClearResources();
+            FetchResources(path);
+            CurrentPathTextBox.Text = path;
+            RenderFoldersAndFiles();
+        }
+
+        public void OpenFolder(ListView listView, ListViewItem folder)
+        {
+            if (folder.Tag == null) throw new Exception("Folder does not have Tag property");
+            var folderInfo = (ListViewResourcesItem)folder.Tag;
+            NavigateTo(folderInfo.Path);
+            Navigation.Add(folderInfo.Path);
+        }
+
+        private void FetchResources(string path) 
+        {
             FetchFolders(path);
-           //Helper.PrintList(Folders);
+        }
+
+        public void GoBackFromFolder()
+        {
+            string path = Navigation.GetBackFolderPath();
+            NavigateTo(path);
+        }
+
+        public void GoForward()
+        {
+            string path = Navigation.GetForwardFolderPath();
+            NavigateTo(path);
         }
 
         private void FetchFolders(string path)
         {
-            // add try and catch
-            var folders = Directory.EnumerateDirectories(path);
-            foreach (var folder in folders)
+            try
             {
-                string cuttedFolderName = folder.Replace(path, "");
-                DirectoryInfo directoryInfo = new DirectoryInfo(folder);
-                Folders.Add(new Folder(cuttedFolderName, directoryInfo.LastWriteTime, folder)); 
+                var folders = Directory.EnumerateDirectories(path);
+
+                foreach (var folder in folders)
+                {
+                    string cuttedFolderName = folder.Replace(path, "");
+                    DirectoryInfo directoryInfo = new DirectoryInfo(folder);
+                    Folders.Add(new Folder(cuttedFolderName, directoryInfo.LastWriteTime, folder)); 
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.Message);
             }
         }
 
-        public void RenderFoldersAndFiles()
+        private void RenderFoldersAndFiles()
         {
             ImageController imageController = new ImageController();
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(20, 20);
             imageList.Images.Add(imageController.ImageKeyFolder, Image.FromFile(imageController.Folder));
             ListViewResources.SmallImageList = imageList;
-
-            CurrentPathTextBox.Text = CurrentPath;
 
             foreach(Folder folder in Folders)
             {
@@ -78,53 +109,13 @@ namespace FileExplorer.Src
             }
         }
 
-        public void ReloadView(string path)
-        {
-            ClearResources();
-            FetchResources(path);
-            RenderFoldersAndFiles();
-        }
 
-        // modify openFolder that accept nither path or listviewitem
-        public void OpenFolder(ListView listView, ListViewItem folderOrFile)
-        {
-            // go thru MODELS, CASTING, ENUMS
-            var castedTagObj = (ListViewResourcesItem)folderOrFile.Tag;
-
-            
-
-            // ask is castedTagObj diffrent from history[1] 
-            // if it is then you list [root path, ]
-            
-            if(castedTagObj.ItemType == ItemType.Folder) 
-            {
-                // empty list view
-                ReloadView(castedTagObj.Path);
-            }
-        }
-
-        public void ClearResources()
+        private void ClearResources()
         {
             // maybe in future add some spinner 
             ListViewResources.Items.Clear();
             Folders.Clear();
         }
 
-        public void GoBackFromFolder()
-        {
-            if (CurrentPathTextBox.Text == @"C:\") return;
-            string newPath = CurrentPath[..CurrentPath.LastIndexOf(Path.DirectorySeparatorChar)];
-
-            // FIX: "C:" → "C:\" (or D:, E:, etc.)
-            if (newPath == "C:") newPath = @"C:\";
-            CurrentPathTextBox.Text = newPath;
-            ReloadView(newPath);
-            IndexFolderPointer--;
-        }
-
-        public void GoForward()
-        {
-
-        }
     }
 }

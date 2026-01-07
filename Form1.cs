@@ -8,26 +8,12 @@ namespace FileExplorer
         public Form1()
         {
             InitializeComponent();
-            FileManager = new FileManager(listViewResources, currentAddress);
+            FileManager = new FileManager(listViewResources, currentAddressTextBox);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // show c folder
-            // C:\
-
-            // a couple corrections
-            // 1. Image class were based on is it  folder or file or type of file to return image path
-            // 2. size property we should check is it something folder or file if file call file info if folder call folder info
-
-            // step 1. make class file explorer view and paste the code that will output 
-            // step 2. refactor the code, add class fileexplorer manager that will return list of all files and folder in form
-            // { name: "something", lastUpdated: "21.09.2025", type: "Folder", size: "" }
-
-
-            FileManager.FetchResources(@"C:\");
-            FileManager.RenderFoldersAndFiles();
-
+            FileManager.Initialize(@"C:\");
         }
 
         private void listViewResources_MouseClick(object sender, MouseEventArgs e)
@@ -37,7 +23,6 @@ namespace FileExplorer
                 ListViewItem clickedItem = listViewResources.GetItemAt(e.X, e.Y);
                 if (clickedItem != null)
                 {
-                    FileManager.CanGoForward = true;
                     FileManager.OpenFolder(listViewResources, clickedItem);
                 }
             }

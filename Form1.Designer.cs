@@ -30,7 +30,7 @@
         {
             btnBack = new Button();
             btnForward = new Button();
-            currentAddress = new TextBox();
+            currentAddressTextBox = new TextBox();
             listViewResources = new ListView();
             name = new ColumnHeader();
             dateModified = new ColumnHeader();
@@ -42,7 +42,7 @@
             // 
             // btnBack
             // 
-            btnBack.Location = new Point(13, 23);
+            btnBack.Location = new Point(13, 19);
             btnBack.Margin = new Padding(3, 4, 3, 4);
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(38, 31);
@@ -53,7 +53,7 @@
             // 
             // btnForward
             // 
-            btnForward.Location = new Point(57, 23);
+            btnForward.Location = new Point(57, 19);
             btnForward.Margin = new Padding(3, 4, 3, 4);
             btnForward.Name = "btnForward";
             btnForward.Size = new Size(38, 31);
@@ -62,13 +62,13 @@
             btnForward.UseVisualStyleBackColor = true;
             btnForward.Click += btnForward_Click;
             // 
-            // currentAddress
+            // currentAddressTextBox
             // 
-            currentAddress.Location = new Point(102, 23);
-            currentAddress.Margin = new Padding(3, 4, 3, 4);
-            currentAddress.Name = "currentAddress";
-            currentAddress.Size = new Size(700, 27);
-            currentAddress.TabIndex = 3;
+            currentAddressTextBox.Location = new Point(102, 23);
+            currentAddressTextBox.Margin = new Padding(3, 4, 3, 4);
+            currentAddressTextBox.Name = "currentAddressTextBox";
+            currentAddressTextBox.Size = new Size(700, 27);
+            currentAddressTextBox.TabIndex = 3;
             // 
             // listViewResources
             // 
@@ -129,7 +129,7 @@
             Controls.Add(btnSettings);
             Controls.Add(treeView1);
             Controls.Add(listViewResources);
-            Controls.Add(currentAddress);
+            Controls.Add(currentAddressTextBox);
             Controls.Add(btnForward);
             Controls.Add(btnBack);
             Name = "Form1";
@@ -143,7 +143,7 @@
 
         private Button btnBack;
         private Button btnForward;
-        private TextBox currentAddress;
+        private TextBox currentAddressTextBox;
         private ListView listViewResources;
         private TreeView treeView1;
         private Button btnSettings;
